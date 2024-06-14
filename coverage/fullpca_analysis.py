@@ -19,7 +19,6 @@ print(X.columns)
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
-# 执行PCA
 pca = PCA()
 X_pca = pca.fit_transform(X_scaled)
 
@@ -46,9 +45,35 @@ model = LinearRegression()
 model.fit(Z, y)
 y_pred = model.predict(Z)
 
+
 # 计算R-squared值
 r2 = r2_score(y, y_pred)
 print(f'R-squared using PCA: {r2}')
+
+# # 创建一个包含主成分的DataFrame
+# pca_df = pd.DataFrame(X_pca, columns=[f'PC_{i+1}' for i in range(X_pca.shape[1])])
+
+# # # 目标变量
+# y = data['lpsa']
+
+# # 循环从PC_1到PC_8，绘制每个主成分与目标变量的散点图
+# for i in range(1, 9):
+#     plt.figure(figsize=(8, 6))  # 设置图像大小
+#     Z = pca_df[f'PC_{i}'].values.reshape(-1, 1)  # 提取第i个主成分
+#     model = LinearRegression()  # 初始化线性回归模型
+#     model.fit(Z, y)  # 训练模型
+#     y_pred = model.predict(Z)  # 预测目标变量值
+
+#     plt.scatter(Z, y, color='blue', label=f'Actual values for PC_{i}')
+#     plt.plot(Z, y_pred, color='red', linewidth=2, label=f'Regression line for PC_{i}')
+
+#     plt.title(f'Scatter plot of PC_{i} vs Target Variable (lpsa)')
+#     plt.xlabel(f'PC_{i}')
+#     plt.ylabel('lpsa')
+
+#     plt.legend()
+
+#     plt.show()
 
 # 残差图
 residuals = y - y_pred
@@ -65,7 +90,6 @@ y_pred_no_pca = model.predict(X_scaled)
 r2_no_pca = r2_score(y, y_pred_no_pca)
 print(f'R-squared without PCA: {r2_no_pca}')
 
-# 残差图 (不使用PCA)
 residuals_no_pca = y - y_pred_no_pca
 plt.scatter(y_pred_no_pca, residuals_no_pca)
 plt.axhline(y=0, color='r', linestyle='--')
